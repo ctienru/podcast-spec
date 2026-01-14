@@ -1,0 +1,49 @@
+{
+  "_source": [
+    "podcast_id",
+    "title",
+    "description",
+    "publisher",
+    "language",
+    "image_url",
+    "episode_count"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": "machine learning",
+            "type": "most_fields",
+            "fields": [
+              "title^5",
+              "description^2",
+              "publisher^1"
+            ],
+            "operator": "and",
+            "minimum_should_match": "75%"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "terms": {
+            "language": ["en"]
+          }
+        },
+        {
+          "exists": {
+            "field": "image_url"
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    { "_score": "desc" },
+    { "popularity_score": "desc" },
+    { "episode_count": "desc" }
+  ],
+  "from": 0,
+  "size": 10
+}

@@ -1,0 +1,68 @@
+{
+  "_source": [
+    "episode_id",
+    "title",
+    "description",
+    "published_at",
+    "duration_sec",
+    "image_url",
+    "language",
+    "podcast.podcast_id",
+    "podcast.title",
+    "podcast.publisher",
+    "podcast.image_url"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": "machine learning",
+            "type": "best_fields",
+            "fields": [
+              "title^3",
+              "description^1.5",
+              "podcast.title^1.0",
+              "podcast.publisher^0.5"
+            ],
+            "operator": "and",
+            "minimum_should_match": "75%"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "terms": {
+            "language": ["en"]
+          }
+        },
+        {
+          "exists": {
+            "field": "image_url"
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "_score": "desc"
+    }
+  ],
+  "highlight": {
+    "pre_tags": ["<em>"],
+    "post_tags": ["</em>"],
+    "fields": {
+      "title": {
+        "number_of_fragments": 1,
+        "fragment_size": 150
+      },
+      "description": {
+        "number_of_fragments": 2,
+        "fragment_size": 180
+      }
+    }
+  },
+  "from": 0,
+  "size": 20
+}

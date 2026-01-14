@@ -1,0 +1,60 @@
+{
+  "_source": [
+    "podcast_id",
+    "title",
+    "description",
+    "publisher",
+    "language",
+    "image_url",
+    "episode_count"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": "{{q}}",
+            "type": "most_fields",
+            "fields": [
+              "title^5",
+              "description^2",
+              "publisher^1"
+            ],
+            "operator": "and",
+            "minimum_should_match": "75%"
+          }
+        }
+      ],
+      {{#language}}
+      "filter": [
+        {
+          "terms": {
+            "language": {{language}}
+          }
+        },
+        {
+          "exists": {
+            "field": "image_url"
+          }
+        }
+      ]
+      {{/language}}
+      {{^language}}
+      "filter": [
+        {
+          "exists": {
+            "field": "image_url"
+          }
+        }
+      ]
+      {{/language}}
+    }
+  },
+  "sort": [
+    { "_score": "desc" },
+    { "popularity_score": "desc" },
+    { "episode_count": "desc" }
+  ],
+  "from": {{from}},
+  "size": {{size}}
+}
