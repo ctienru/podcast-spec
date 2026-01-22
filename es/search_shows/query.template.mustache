@@ -1,0 +1,38 @@
+{
+  "_source": {
+    "includes": [
+      "show_id",
+      "title",
+      "description",
+      "publisher",
+      "language",
+      "image_url",
+      "episode_count"
+    ]
+  },
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "{{query}}",
+            "type": "most_fields",
+            "fields": [
+              "title^5",
+              "description^2",
+              "publisher^2",
+            ],
+            "operator": "or"
+          }
+        }
+      ],
+      "minimum_should_match": 1,
+    }
+  },
+  "sort": [
+    { "_score": { "order": "desc" } },
+    { "episode_count": { "order": "desc" } }
+  ],
+  "from": {{from}},
+  "size": {{size}}
+}

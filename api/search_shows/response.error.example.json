@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "size: Size must not exceed 100"
+  }
+}

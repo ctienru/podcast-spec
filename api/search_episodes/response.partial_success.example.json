@@ -1,0 +1,26 @@
+{
+  "status": "partial_success",
+  "warning": "Highlight service unavailable",
+  "data": {
+    "page": 1,
+    "size": 20,
+    "total": 1243,
+    "items": [
+      {
+        "episodeId": "episode_987",
+        "title": "Intro to Machine Learning",
+        "description": "In this episode we introduce the basics of machine learning.",
+        "highlights": {},
+        "publishedAt": "2024-11-02T00:00:00Z",
+        "durationSec": 3600,
+        "imageUrl": "https://cdn.example.com/episodes/episode_987.jpg",
+        "podcast": {
+          "showId": "show_123",
+          "title": "Machine Learning Podcast",
+          "publisher": "ABC Media",
+          "imageUrl": "https://cdn.example.com/podcasts/podcast_123.jpg"
+        }
+      }
+    ]
+  }
+}
