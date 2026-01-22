@@ -1,6 +1,6 @@
 {
   "_source": [
-    "podcast_id",
+    "show_id",
     "title",
     "description",
     "publisher",

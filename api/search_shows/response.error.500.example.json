@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "error": {
+    "code": "ES_PARSE_ERROR",
+    "message": "Invalid response from search service"
+  }
+}

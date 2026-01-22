@@ -1,0 +1,20 @@
+{
+  "status": "partial_success",
+  "warning": "Show enrichment service unavailable",
+  "data": {
+    "page": 1,
+    "size": 10,
+    "total": 245,
+    "items": [
+      {
+        "showId": "show_123",
+        "title": "Machine Learning Podcast",
+        "description": "Weekly discussions on machine learning and data science.",
+        "language": "en",
+        "publisher": "ABC Media",
+        "imageUrl": "https://cdn.example.com/podcasts/podcast_123.jpg",
+        "episodeCount": 120
+      }
+    ]
+  }
+}

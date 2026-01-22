@@ -1,0 +1,36 @@
+{
+  "status": "ok",
+  "data": {
+    "page": 1,
+    "size": 10,
+    "total": 245,
+    "items": [
+      {
+        "showId": "show_123",
+        "title": "Machine Learning Podcast",
+        "description": "Weekly discussions on machine learning and data science.",
+        "language": "en",
+        "publisher": "ABC Media",
+        "imageUrl": "https://cdn.example.com/podcasts/podcast_123.jpg",
+        "lastUpdateAt": "xxxx",
+        "externalUrl": {
+          "applePodcastUrl": "xxxxx"
+        },
+        "episodeCount": 120
+      },
+      {
+        "showId": "show_456",
+        "title": "機器學習實戰",
+        "description": "用中文聊機器學習、資料科學與職涯。",
+        "language": "zh",
+        "publisher": "Data Talk",
+        "imageUrl": "https://cdn.example.com/podcasts/podcast_456.jpg",
+        "lastUpdateAt": "xxxx",
+        "episodeCount": 86,
+        "externalUrl": {
+          "applePodcastUrl": "xxxxx"
+        },
+      }
+    ]
+  }
+}

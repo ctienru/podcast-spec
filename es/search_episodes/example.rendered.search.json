@@ -7,10 +7,10 @@
     "duration_sec",
     "image_url",
     "language",
-    "podcast.podcast_id",
-    "podcast.title",
-    "podcast.publisher",
-    "podcast.image_url"
+    "show.show_id",
+    "show.title",
+    "show.publisher",
+    "show.image_url"
   ],
   "query": {
     "bool": {
@@ -22,8 +22,8 @@
             "fields": [
               "title^3",
               "description^1.5",
-              "podcast.title^1.0",
-              "podcast.publisher^0.5"
+              "show.title^1.0",
+              "show.publisher^0.5"
             ],
             "operator": "and",
             "minimum_should_match": "75%"

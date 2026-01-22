@@ -1,0 +1,12 @@
+{
+  "status": "error",
+  "error": {
+    "code": "INVALID_PARAMETER",
+    "message": "q: Search query cannot be empty; size: Size must not exceed 100; page: Page must be at least 1",
+    "details": [
+      "q: Search query cannot be empty",
+      "size: Size must not exceed 100",
+      "page: Page must be at least 1"
+    ]
+  }
+}

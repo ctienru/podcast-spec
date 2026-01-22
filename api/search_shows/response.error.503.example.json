@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "error": {
+    "code": "SEARCH_SERVICE_ERROR",
+    "message": "Search service temporarily unavailable"
+  }
+}
