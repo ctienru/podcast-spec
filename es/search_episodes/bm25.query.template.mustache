@@ -1,0 +1,57 @@
+{
+  "_source": {
+    "includes": [
+      "episode_id",
+      "title",
+      "description",
+      "published_at",
+      "duration_sec",
+      "image_url",
+      "language",
+      "show.show_id",
+      "show.title",
+      "show.publisher",
+      "show.image_url"
+    ]
+  },
+
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "{{query}}",
+            "fields": ["title^3", "description"],
+            "type": "best_fields"
+          }
+        },
+        {
+          "match_phrase": {
+            "title": {
+              "query": "{{query}}",
+              "boost": 2
+            }
+          }
+        }
+      ],
+      "minimum_should_match": 1
+
+      {{#languages}},
+      "filter": [
+        {
+          "terms": {
+            "language": {{#toJson}}languages{{/toJson}}
+          }
+        }
+      ]
+      {{/languages}}
+    }
+  },
+
+  "sort": [
+    { "_score": { "order": "desc" } }
+  ],
+
+  "from": {{from}},
+  "size": {{size}}
+}

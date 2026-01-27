@@ -12,6 +12,37 @@ not just what the query contains.
 
 ---
 
+## Query Templates
+
+| Template | Description | Use Case |
+|----------|-------------|----------|
+| `bm25.query.template.mustache` | BM25 text matching | Keyword search |
+| `knn.query.template.mustache` | kNN semantic search | Semantic similarity |
+| `query.template.mustache` | Legacy BM25 (deprecated) | Backward compatibility |
+
+### Hybrid Search (Recommended)
+
+For best results, use **Hybrid Search** combining BM25 + kNN with RRF fusion:
+
+```
+1. Execute BM25 query  → results_bm25 (top 100)
+2. Execute kNN query   → results_knn (top 100)
+3. Apply RRF fusion    → final results
+```
+
+**RRF (Reciprocal Rank Fusion):**
+
+```
+RRF_score(doc) = Σ 1 / (k + rank_i)
+
+where k = 60 (rank constant)
+```
+
+RRF is implemented in the application layer (Java backend),
+not in Elasticsearch, to avoid license requirements.
+
+---
+
 ## Related API
 
 | Item | Value |
@@ -247,3 +278,83 @@ The **Search Episodes** Elasticsearch query is:
 
 This design favors **search quality and system simplicity**
 over perfect data normalization.
+
+---
+
+## kNN Search Requirements
+
+### Embedding Model
+
+| Property | Value |
+|----------|-------|
+| Model | `paraphrase-multilingual-mpnet-base-v2` |
+| Dimensions | 768 |
+| Format | ONNX (for Java runtime) |
+
+### Query Parameters (kNN Template)
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `query_vector` | float[768] | Encoded query embedding |
+| `size` | int | Number of results (k) |
+| `num_candidates` | int | ANN candidates (default: 100) |
+
+### Java Integration
+
+```java
+// 1. Load ONNX model
+OrtSession session = env.createSession("model.onnx");
+
+// 2. Encode query
+float[] queryVector = encode("ADHD");
+
+// 3. Execute kNN query with template
+Map<String, Object> params = Map.of(
+    "query_vector", queryVector,
+    "size", 100,
+    "num_candidates", 100
+);
+```
+
+---
+
+## Hybrid Search Implementation
+
+### RRF Fusion (Java Pseudocode)
+
+```java
+Map<String, Double> rrfScores = new HashMap<>();
+int k = 60; // rank constant
+
+// Add BM25 contributions
+for (int rank = 0; rank < bm25Results.size(); rank++) {
+    String id = bm25Results.get(rank).getId();
+    rrfScores.merge(id, 1.0 / (k + rank + 1), Double::sum);
+}
+
+// Add kNN contributions
+for (int rank = 0; rank < knnResults.size(); rank++) {
+    String id = knnResults.get(rank).getId();
+    rrfScores.merge(id, 1.0 / (k + rank + 1), Double::sum);
+}
+
+// Sort by RRF score
+List<String> finalResults = rrfScores.entrySet().stream()
+    .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+    .map(Map.Entry::getKey)
+    .limit(size)
+    .toList();
+```
+
+### Expected Overlap Rates
+
+Based on testing with Chinese podcast data:
+
+| Query Type | BM25-kNN Overlap |
+|------------|------------------|
+| English terms (ADHD) | ~40% |
+| Common Chinese words | ~10-15% |
+| Domain-specific Chinese | ~3-7% |
+
+Low overlap is expected and beneficial —
+Hybrid search combines diverse signals from both methods.
