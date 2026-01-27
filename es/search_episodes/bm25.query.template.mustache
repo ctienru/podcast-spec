@@ -34,17 +34,14 @@
           }
         }
       ],
-      "minimum_should_match": 1
-
-      {{#languages}},
+      "minimum_should_match": 1{{#languagesJson}},
       "filter": [
         {
           "terms": {
-            "language": {{#toJson}}languages{{/toJson}}
+            "language": {{{languagesJson}}}
           }
         }
-      ]
-      {{/languages}}
+      ]{{/languagesJson}}
     }
   },
 

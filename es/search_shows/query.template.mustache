@@ -11,7 +11,7 @@
   },
   "query": {
     "bool": {
-      "should": [
+      "must": [
         {
           "multi_match": {
             "query": "{{query}}",
@@ -23,8 +23,14 @@
             "operator": "or"
           }
         }
-      ],
-      "minimum_should_match": 1
+      ]{{#languagesJson}},
+      "filter": [
+        {
+          "terms": {
+            "language": {{{languagesJson}}}
+          }
+        }
+      ]{{/languagesJson}}
     }
   },
   "sort": [

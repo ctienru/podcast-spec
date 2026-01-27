@@ -25,7 +25,15 @@ to support complex query parameters in the request body.
 | page | number | ❌ | Page number (min: 1, default: 1) |
 | size | number | ❌ | Page size (min: 1, max: 100, default: 20) |
 | sort | string | ❌ | Sort order: `relevance` or `date` |
-| language | string[] | ❌ | Language filter (e.g. `["en", "zh-TW"]`) |
+| language | string[] | ❌ | Language filter |
+
+### Language Values
+
+| Value | Description |
+|-------|-------------|
+| `en` | English |
+| `zh-hant` | Traditional Chinese (繁體中文) |
+| `zh-hans` | Simplified Chinese (简体中文) |
 
 ### Example
 
