@@ -3,7 +3,6 @@
     "includes": [
       "show_id",
       "title",
-      "description",
       "publisher",
       "language",
       "image_url",
@@ -19,14 +18,13 @@
             "type": "most_fields",
             "fields": [
               "title^5",
-              "description^2",
-              "publisher^2",
+              "publisher^2"
             ],
             "operator": "or"
           }
         }
       ],
-      "minimum_should_match": 1,
+      "minimum_should_match": 1
     }
   },
   "sort": [
