@@ -15,19 +15,85 @@
     ]
   },
 
+  {{#time_decay_enabled}}
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "fields": ["title^3", "title.chinese^3", "description", "description.chinese"],
+                "type": "best_fields"
+              }
+            },
+            {
+              "match_phrase": {
+                "title": {
+                  "query": "{{query}}",
+                  "boost": 2
+                }
+              }
+            },
+            {
+              "match_phrase": {
+                "title.chinese": {
+                  "query": "{{query}}",
+                  "boost": 2
+                }
+              }
+            }
+          ],
+          "minimum_should_match": 1{{#languagesJson}},
+          "filter": [
+            {
+              "terms": {
+                "language": {{{languagesJson}}}
+              }
+            }
+          ]{{/languagesJson}}
+        }
+      },
+      "functions": [
+        {
+          "gauss": {
+            "published_at": {
+              "origin": "now",
+              "scale": "{{time_decay_scale}}",
+              "decay": {{time_decay_rate}}
+            }
+          }
+        }
+      ],
+      "boost_mode": "multiply",
+      "score_mode": "multiply"
+    }
+  },
+  {{/time_decay_enabled}}
+
+  {{^time_decay_enabled}}
   "query": {
     "bool": {
       "should": [
         {
           "multi_match": {
             "query": "{{query}}",
-            "fields": ["title^3", "description"],
+            "fields": ["title^3", "title.chinese^3", "description", "description.chinese"],
             "type": "best_fields"
           }
         },
         {
           "match_phrase": {
             "title": {
+              "query": "{{query}}",
+              "boost": 2
+            }
+          }
+        },
+        {
+          "match_phrase": {
+            "title.chinese": {
               "query": "{{query}}",
               "boost": 2
             }
@@ -44,6 +110,7 @@
       ]{{/languagesJson}}
     }
   },
+  {{/time_decay_enabled}}
 
   "sort": [
     { "_score": { "order": "desc" } }

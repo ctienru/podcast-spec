@@ -13,35 +13,58 @@
     "show.image_url"
   ],
   "query": {
-    "bool": {
-      "must": [
+    "function_score": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": "machine learning",
+                "type": "best_fields",
+                "fields": [
+                  "title^3",
+                  "title.chinese^3",
+                  "description^1.5",
+                  "description.chinese^1.5",
+                  "show.title^1.0",
+                  "show.title.chinese^1.0",
+                  "show.publisher^0.5",
+                  "show.publisher.chinese^0.5"
+                ],
+                "operator": "and",
+                "minimum_should_match": "75%"
+              }
+            }
+          ],
+          "filter": [
+            {
+              "terms": {
+                "language": [
+                  "en"
+                ]
+              }
+            },
+            {
+              "exists": {
+                "field": "image_url"
+              }
+            }
+          ]
+        }
+      },
+      "functions": [
         {
-          "multi_match": {
-            "query": "machine learning",
-            "type": "best_fields",
-            "fields": [
-              "title^3",
-              "description^1.5",
-              "show.title^1.0",
-              "show.publisher^0.5"
-            ],
-            "operator": "and",
-            "minimum_should_match": "75%"
+          "gauss": {
+            "published_at": {
+              "origin": "now",
+              "scale": "90d",
+              "decay": 0.5
+            }
           }
         }
       ],
-      "filter": [
-        {
-          "terms": {
-            "language": ["en"]
-          }
-        },
-        {
-          "exists": {
-            "field": "image_url"
-          }
-        }
-      ]
+      "boost_mode": "multiply",
+      "score_mode": "multiply"
     }
   },
   "sort": [
@@ -50,8 +73,12 @@
     }
   ],
   "highlight": {
-    "pre_tags": ["<em>"],
-    "post_tags": ["</em>"],
+    "pre_tags": [
+      "<em>"
+    ],
+    "post_tags": [
+      "</em>"
+    ],
     "fields": {
       "title": {
         "number_of_fragments": 1,
