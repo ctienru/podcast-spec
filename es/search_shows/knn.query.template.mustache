@@ -1,0 +1,27 @@
+{
+  "_source": {
+    "includes": [
+      "show_id",
+      "title",
+      "description",
+      "subtitle",
+      "publisher",
+      "language",
+      "categories",
+      "explicit",
+      "show_type",
+      "website_url",
+      "image_url",
+      "episode_count"
+    ]
+  },
+
+  "knn": {
+    "field": "embedding",
+    "query_vector": {{#toJson}}query_vector{{/toJson}},
+    "k": {{size}},
+    "num_candidates": {{num_candidates}}
+  },
+
+  "size": {{size}}
+}

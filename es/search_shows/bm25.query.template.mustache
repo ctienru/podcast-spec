@@ -1,0 +1,70 @@
+{
+  "_source": {
+    "includes": [
+      "show_id",
+      "title",
+      "description",
+      "subtitle",
+      "publisher",
+      "language",
+      "categories",
+      "explicit",
+      "show_type",
+      "website_url",
+      "image_url",
+      "episode_count"
+    ]
+  },
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "{{query}}",
+            "type": "most_fields",
+            "fields": [
+              "title^5",
+              "title.chinese^5",
+              "description^2",
+              "description.chinese^2",
+              "subtitle^1.5",
+              "subtitle.chinese^1.5",
+              "publisher^1",
+              "publisher.chinese^1"
+            ]
+          }
+        },
+        {
+          "match_phrase": {
+            "title": {
+              "query": "{{query}}",
+              "boost": 3
+            }
+          }
+        },
+        {
+          "match_phrase": {
+            "title.chinese": {
+              "query": "{{query}}",
+              "boost": 3
+            }
+          }
+        }
+      ],
+      "minimum_should_match": 1{{#languagesJson}},
+      "filter": [
+        {
+          "terms": {
+            "language": {{{languagesJson}}}
+          }
+        }
+      ]{{/languagesJson}}
+    }
+  },
+  "sort": [
+    { "_score": { "order": "desc" } },
+    { "episode_count": { "order": "desc" } }
+  ],
+  "from": {{from}},
+  "size": {{size}}
+}
