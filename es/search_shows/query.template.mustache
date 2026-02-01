@@ -3,8 +3,14 @@
     "includes": [
       "show_id",
       "title",
+      "description",
+      "subtitle",
       "publisher",
       "language",
+      "categories",
+      "explicit",
+      "show_type",
+      "website_url",
       "image_url",
       "episode_count"
     ]
@@ -18,7 +24,13 @@
             "type": "most_fields",
             "fields": [
               "title^5",
-              "publisher^2"
+              "title.chinese^5",
+              "description^2",
+              "description.chinese^2",
+              "subtitle^1.5",
+              "subtitle.chinese^1.5",
+              "publisher^1",
+              "publisher.chinese^1"
             ],
             "operator": "or"
           }

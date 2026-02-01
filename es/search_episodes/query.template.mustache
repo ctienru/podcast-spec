@@ -15,6 +15,61 @@
     ]
   },
 
+  {{#time_decay_enabled}}
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": "{{query}}",
+                "type": "best_fields",
+                "fields": [
+                  "title^5",
+                  "title.chinese^5",
+                  "description^1.5",
+                  "description.chinese^1.5",
+                  "show.title^1.0",
+                  "show.title.chinese^1.0",
+                  "show.publisher^0.5",
+                  "show.publisher.chinese^0.5"
+                ],
+                "operator": "or",
+                "minimum_should_match": "50%"
+              }
+            }
+          ],
+
+          "filter": [
+            {{#languages}}
+            {
+              "terms": {
+                "language": {{#toJson}}languages{{/toJson}}
+              }
+            }
+            {{/languages}}
+          ]
+        }
+      },
+      "functions": [
+        {
+          "gauss": {
+            "published_at": {
+              "origin": "now",
+              "scale": "{{time_decay_scale}}",
+              "decay": {{time_decay_rate}}
+            }
+          }
+        }
+      ],
+      "boost_mode": "multiply",
+      "score_mode": "multiply"
+    }
+  },
+  {{/time_decay_enabled}}
+
+  {{^time_decay_enabled}}
   "query": {
     "bool": {
       "must": [
@@ -24,9 +79,13 @@
             "type": "best_fields",
             "fields": [
               "title^5",
+              "title.chinese^5",
               "description^1.5",
+              "description.chinese^1.5",
               "show.title^1.0",
-              "show.publisher^0.5"
+              "show.title.chinese^1.0",
+              "show.publisher^0.5",
+              "show.publisher.chinese^0.5"
             ],
             "operator": "or",
             "minimum_should_match": "50%"
@@ -45,6 +104,7 @@
       ]
     }
   },
+  {{/time_decay_enabled}}
 
   {{#sort_by_date}}
   "sort": [
