@@ -40,18 +40,27 @@ podcast-spec/
 └── es/                           # Elasticsearch Query Specs
     ├── search_episodes/
     │   ├── README.md            # Query design rationale
+    │   ├── bm25.query.template.mustache    # Text search with time decay
+    │   ├── knn.query.template.mustache     # Semantic search
+    │   ├── exact.query.template.mustache   # Exact phrase match
+    │   └── query.template.mustache         # Legacy (alias to bm25)
+    ├── search_shows/
+    │   ├── README.md
+    │   ├── bm25.query.template.mustache
+    │   ├── knn.query.template.mustache
     │   └── query.template.mustache
-    └── search_shows/
-        ├── README.md
-        └── query.template.mustache
+    └── suggest/
+        ├── shows.query.template.mustache   # Show autocomplete
+        └── episodes.query.template.mustache # Episode autocomplete
 ```
 
 ## API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/search/episodes` | POST | Search episodes with pagination, sorting, highlights |
-| `/api/search/shows` | POST | Search podcasts for discovery (carousel UI) |
+| `/api/search/episodes` | GET | Search episodes (supports bm25/knn/hybrid/exact modes) |
+| `/api/search/shows` | GET | Search podcasts (supports bm25/knn/hybrid modes) |
+| `/api/search/suggest` | GET | Autocomplete suggestions for shows and episodes |
 
 ### Search Episodes
 
@@ -163,10 +172,26 @@ podcast-frontend/
 
 The `es/` directory contains query specifications with design rationale:
 
-| Query | Purpose | Highlights |
-|-------|---------|------------|
-| `search_episodes` | Intent-driven search | Precision-first, mandatory highlighting |
-| `search_shows` | Discovery search | Fast, no highlighting, carousel-optimized |
+### Search Modes
+
+| Mode | Template | Description |
+|------|----------|-------------|
+| `bm25` | `bm25.query.template.mustache` | Text matching (TF-IDF) with time decay |
+| `knn` | `knn.query.template.mustache` | Semantic search using embeddings |
+| `hybrid` | (in-code RRF fusion) | BM25 + kNN with Reciprocal Rank Fusion |
+| `exact` | `exact.query.template.mustache` | Exact phrase match (match_phrase) |
+
+### Query Templates
+
+| Query | Purpose | Features |
+|-------|---------|----------|
+| `search_episodes/bm25` | Keyword search | Time decay, IK analyzer for Chinese |
+| `search_episodes/knn` | Concept search | 384-dim embedding, cosine similarity |
+| `search_episodes/exact` | Precise search | match_phrase query |
+| `search_shows/bm25` | Show keyword search | Title^5, description^2 boosting |
+| `search_shows/knn` | Show semantic search | Embedding-based |
+| `suggest/shows` | Show autocomplete | Edge n-gram on title |
+| `suggest/episodes` | Episode autocomplete | Edge n-gram on title |
 
 ## Related Projects
 
