@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClickLogRequest",
+  "type": "object",
+  "required": ["requestId", "timestamp", "query", "selectedLang", "clickedEpisodeId", "clickedRank", "clickedLanguage"],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Corresponds to EpisodeSearchResponse.searchRequestId. Must come from the search response; do not generate a new UUID on the frontend."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of when the click occurred."
+    },
+    "query": {
+      "type": "string",
+      "description": "The search query string (same as the corresponding query log)."
+    },
+    "selectedLang": {
+      "type": "string",
+      "enum": ["zh-tw", "zh-cn", "en", "zh-both"],
+      "description": "Language selected by the user when searching."
+    },
+    "clickedEpisodeId": {
+      "type": "string",
+      "description": "ID of the episode the user clicked. Format: episode:{source}:{showId}:{episodeId}"
+    },
+    "clickedRank": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1-based rank of the clicked episode in the result list."
+    },
+    "clickedLanguage": {
+      "type": "string",
+      "description": "Language index of the clicked episode. Used to calculate same-language click rate."
+    },
+    "timeToClickSec": {
+      "type": "number",
+      "description": "Seconds from search result display to click. Optional; used for user decision speed analysis."
+    }
+  },
+  "additionalProperties": false
+}

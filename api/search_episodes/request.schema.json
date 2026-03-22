@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpisodeSearchRequest",
+  "type": "object",
+  "required": ["q"],
+  "properties": {
+    "q": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Search query string. Must not be empty."
+    },
+    "lang": {
+      "type": "string",
+      "enum": ["zh-tw", "zh-cn", "en", "zh-both"],
+      "description": "Target language index for routing. Replaces language[] in v2. When zh-both, page is limited to 5 (enforced by backend, not schema)."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["bm25", "knn", "hybrid", "exact"],
+      "default": "hybrid",
+      "description": "Search mode. knn/hybrid require embedding service; falls back to bm25 if unavailable."
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1,
+      "description": "Page number, 1-based. For lang=zh-both, backend enforces page <= 5."
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20,
+      "description": "Number of results per page."
+    },
+    "sort": {
+      "type": "string",
+      "enum": ["relevance", "date"],
+      "default": "relevance",
+      "description": "Sort order."
+    },
+    "language": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "@deprecated Since v2. Use lang instead. Ignored by backend in v2; will be removed in Phase 2."
+    }
+  },
+  "additionalProperties": false
+}

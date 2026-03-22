@@ -1,0 +1,7 @@
+{
+  "status": "error",
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Too many click log requests"
+  }
+}
