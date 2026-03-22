@@ -1,0 +1,92 @@
+{
+  "_source": {
+    "includes": [
+      "episode_id",
+      "title",
+      "description",
+      "published_at",
+      "duration_sec",
+      "image_url",
+      "language",
+      "show.show_id",
+      "show.title",
+      "show.publisher",
+      "show.image_url"
+    ]
+  },
+
+  {{#mode_hybrid}}
+  "knn": {
+    "field": "title_vector",
+    "query_vector": {{#toJson}}queryVector{{/toJson}},
+    "k": {{size}},
+    "num_candidates": 100
+  },
+  {{/mode_hybrid}}
+
+  {{^mode_knn}}
+  "query": {
+    "bool": {
+      "must": [
+        {{#mode_exact}}
+        {
+          "match_phrase": {
+            "title.chinese": {
+              "query": "{{query}}"
+            }
+          }
+        }
+        {{/mode_exact}}
+        {{^mode_exact}}
+        {
+          "multi_match": {
+            "query": "{{query}}",
+            "type": "best_fields",
+            "fields": [
+              "title.chinese^5",
+              "description.chinese^1.5",
+              "show.title.chinese^1.0",
+              "show.publisher^0.5"
+            ],
+            "operator": "or",
+            "minimum_should_match": "50%"
+          }
+        }
+        {{/mode_exact}}
+      ],
+      "filter": []
+    }
+  },
+  {{/mode_knn}}
+
+  {{#sort_by_date}}
+  "sort": [
+    { "published_at": { "order": "desc" } },
+    { "_score": { "order": "desc" } }
+  ],
+  {{/sort_by_date}}
+
+  {{^sort_by_date}}
+  "sort": [
+    { "_score": { "order": "desc" } }
+  ],
+  {{/sort_by_date}}
+
+  "highlight": {
+    "pre_tags": ["<em>"],
+    "post_tags": ["</em>"],
+    "fields": {
+      "title": {
+        "number_of_fragments": 1,
+        "fragment_size": 150
+      },
+      "description": {
+        "number_of_fragments": 2,
+        "fragment_size": 180
+      }
+    }
+  },
+
+  "from": {{from}},
+  "size": {{size}}
+}
