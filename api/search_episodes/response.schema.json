@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpisodeSearchResponse",
+  "oneOf": [
+    {
+      "title": "EpisodeSearchOkResponse",
+      "type": "object",
+      "required": ["status", "searchRequestId", "data"],
+      "properties": {
+        "status": { "type": "string", "enum": ["ok"] },
+        "searchRequestId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID v4 generated per search request. Frontend must pass this as requestId when logging click events."
+        },
+        "data": { "$ref": "#/definitions/PaginatedEpisodes" }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "EpisodeSearchPartialResponse",
+      "type": "object",
+      "required": ["status", "searchRequestId", "warning", "data"],
+      "properties": {
+        "status": { "type": "string", "enum": ["partial_success"] },
+        "searchRequestId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID v4 generated per search request."
+        },
+        "warning": {
+          "type": "string",
+          "description": "Human-readable reason for degraded results, e.g. embedding service unavailable."
+        },
+        "data": { "$ref": "#/definitions/PaginatedEpisodes" }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "PaginatedEpisodes": {
+      "type": "object",
+      "required": ["page", "size", "total", "items"],
+      "additionalProperties": false,
+      "properties": {
+        "page": { "type": "integer", "minimum": 1 },
+        "size": { "type": "integer", "minimum": 1 },
+        "total": { "type": "integer", "minimum": 0 },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["episodeId", "title", "description", "highlights", "publishedAt", "durationSec", "imageUrl", "language", "podcast"],
+            "additionalProperties": false,
+            "properties": {
+              "episodeId": {
+                "type": "string",
+                "description": "Global unique ID. Format: episode:{source}:{showId}:{episodeId}"
+              },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "highlights": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "title": { "type": "array", "items": { "type": "string" } },
+                  "description": { "type": "array", "items": { "type": "string" } }
+                }
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "ISO 8601 UTC timestamp."
+              },
+              "durationSec": { "type": "integer", "minimum": 0 },
+              "imageUrl": { "type": "string" },
+              "language": {
+                "type": "string",
+                "description": "Language index this episode belongs to (zh-tw / zh-cn / en)."
+              },
+              "podcast": {
+                "type": "object",
+                "required": ["podcastId", "title", "publisher", "imageUrl"],
+                "additionalProperties": false,
+                "properties": {
+                  "podcastId": {
+                    "type": "string",
+                    "description": "Global unique ID. Format: show:{source}:{showId}"
+                  },
+                  "title": { "type": "string" },
+                  "publisher": { "type": "string" },
+                  "imageUrl": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "EpisodeDto": {
+      "type": "object",
+      "required": ["episodeId", "title", "description", "highlights", "publishedAt", "durationSec", "imageUrl", "language", "podcast"],
+      "properties": {
+        "episodeId": {
+          "type": "string",
+          "description": "Globally unique ID. Format: episode:{source}:{showId}:{episodeId}"
+        },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "highlights": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "array", "items": { "type": "string" } },
+            "description": { "type": "array", "items": { "type": "string" } }
+          },
+          "additionalProperties": false
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 UTC"
+        },
+        "durationSec": { "type": "integer" },
+        "imageUrl": { "type": "string" },
+        "language": {
+          "type": "string",
+          "description": "Language index this episode belongs to (zh-tw / zh-cn / en)"
+        },
+        "podcast": {
+          "type": "object",
+          "required": ["podcastId", "title", "publisher", "imageUrl"],
+          "properties": {
+            "podcastId": {
+              "type": "string",
+              "description": "Globally unique ID. Format: show:{source}:{showId}"
+            },
+            "title": { "type": "string" },
+            "publisher": { "type": "string" },
+            "imageUrl": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
