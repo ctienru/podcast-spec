@@ -1,12 +1,8 @@
 {
   "status": "error",
   "error": {
-    "code": "INVALID_PARAMETER",
-    "message": "q: Search query cannot be empty; size: Size must not exceed 100; page: Page must be at least 1",
-    "details": [
-      "q: Search query cannot be empty",
-      "size: Size must not exceed 100",
-      "page: Page must be at least 1"
-    ]
+    "code": "CROSS_INDEX_PAGE_LIMIT",
+    "message": "zh-both search only supports up to 5 pages",
+    "details": ["Received page=6, maximum is 5 for lang=zh-both"]
   }
 }

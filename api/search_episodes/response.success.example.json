@@ -1,30 +1,28 @@
 {
   "status": "ok",
+  "searchRequestId": "550e8400-e29b-41d4-a716-446655440000",
   "data": {
     "page": 1,
     "size": 20,
     "total": 1243,
     "items": [
       {
-        "episodeId": "episode_987",
-        "title": "Intro to Machine Learning",
-        "description": "In this episode we introduce the basics of machine learning.",
+        "episodeId": "episode:apple:123:abc",
+        "title": "AI 的未來發展",
+        "description": "本集討論人工智慧在各產業的應用與未來趨勢。",
         "highlights": {
-          "title": [
-            "Intro to <em>Machine Learning</em>"
-          ],
-          "description": [
-            "We introduce the basics of <em>machine learning</em>."
-          ]
+          "title": ["<em>AI</em> 的未來發展"],
+          "description": ["討論 <em>人工智慧</em> 的應用"]
         },
-        "publishedAt": "2024-11-02T00:00:00Z",
+        "publishedAt": "2026-01-15T10:00:00Z",
         "durationSec": 3600,
-        "imageUrl": "https://cdn.example.com/episodes/episode_987.jpg",
+        "imageUrl": "https://example.com/episode.jpg",
+        "language": "zh-tw",
         "podcast": {
-          "showId": "show_123",
-          "title": "Machine Learning Podcast",
-          "publisher": "ABC Media",
-          "imageUrl": "https://cdn.example.com/podcasts/podcast_123.jpg"
+          "podcastId": "show:apple:123",
+          "title": "科技週報",
+          "publisher": "Tech Media",
+          "imageUrl": "https://example.com/show.jpg"
         }
       }
     ]
