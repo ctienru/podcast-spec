@@ -87,13 +87,6 @@ export interface EpisodeSearchRequest {
 
   /** Sort order. Defaults to relevance. */
   sort?: SortOrder;
-
-  /**
-   * @deprecated Removed in v2; use lang instead.
-   * Kept during Phase 0 transition: backend ignores this field; routing is determined by lang.
-   * Will be removed from spec after Phase 2.
-   */
-  language?: string[];
 }
 
 /** A single episode in the search results. */
