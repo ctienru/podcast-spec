@@ -91,7 +91,7 @@ export interface EpisodeSearchRequest {
 
 /** A single episode in the search results. */
 export interface EpisodeDto {
-  /** Global unique ID. Format: episode:{source}:{showId}:{episodeId} */
+  /** Globally unique ID. Format: episode:{source}:{showId}:{episodeId} */
   episodeId: string;
   title: string;
   description: string;
@@ -114,7 +114,7 @@ export interface EpisodeDto {
   language: string;
 
   podcast: {
-    /** Global unique ID. Format: show:{source}:{showId} */
+    /** Globally unique ID. Format: show:{source}:{showId} */
     podcastId: string;
     title: string;
     publisher: string;
@@ -172,8 +172,8 @@ export type EpisodeSearchResult = EpisodeSearchResponse | EpisodeSearchPartialRe
  * Sent by frontend after the user clicks a search result.
  * Used to calculate: same-language click rate, first click rank, and other online metrics.
  *
- * requestId must come from EpisodeSearchResponse.searchRequestId so that
- * query logs and click logs can be correctly joined.
+ * requestId must come from EpisodeSearchResult.searchRequestId (EpisodeSearchResponse or
+ * EpisodeSearchPartialResponse) so that query logs and click logs can be correctly joined.
  * Frontend must NOT generate a new UUID for this field.
  */
 export interface ClickLogRequest {

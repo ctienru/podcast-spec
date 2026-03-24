@@ -38,7 +38,7 @@
       "enum": ["relevance", "date"],
       "default": "relevance",
       "description": "Sort order."
-    },
+    }
   },
   "additionalProperties": false
 }
