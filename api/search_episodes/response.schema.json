@@ -55,7 +55,7 @@
             "properties": {
               "episodeId": {
                 "type": "string",
-                "description": "Global unique ID. Format: episode:{source}:{showId}:{episodeId}"
+                "description": "Globally unique ID. Format: episode:{source}:{showId}:{episodeId}"
               },
               "title": { "type": "string" },
               "description": { "type": "string" },
@@ -85,7 +85,7 @@
                 "properties": {
                   "podcastId": {
                     "type": "string",
-                    "description": "Global unique ID. Format: show:{source}:{showId}"
+                    "description": "Globally unique ID. Format: show:{source}:{showId}"
                   },
                   "title": { "type": "string" },
                   "publisher": { "type": "string" },

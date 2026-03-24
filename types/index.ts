@@ -20,7 +20,7 @@ export type SearchMode = 'bm25' | 'knn' | 'hybrid' | 'exact';
  */
 export type SortOrder = 'relevance' | 'date';
 
-/** Wrapper for all successful API responses. */
+/** Wrapper for ok-status API responses (status: 'ok'). For the full success union including partial_success, see EpisodeSearchResult. */
 export interface ApiSuccessResponse<T> {
   status: 'ok';
   data: T;
@@ -179,7 +179,7 @@ export type EpisodeSearchResult = EpisodeSearchResponse | EpisodeSearchPartialRe
 export interface ClickLogRequest {
   /**
    * ID of the corresponding search request.
-   * Source: EpisodeSearchResponse.searchRequestId. Format: UUID v4.
+   * Source: EpisodeSearchResult.searchRequestId. Format: UUID v4.
    */
   requestId: string;
 
