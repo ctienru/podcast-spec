@@ -12,7 +12,7 @@
     "lang": {
       "type": "string",
       "enum": ["zh-tw", "zh-cn", "en", "zh-both"],
-      "description": "Target language index for routing. Replaces language[] in v2. When zh-both, page is limited to 5 (enforced by backend, not schema)."
+      "description": "Target language index for routing. When zh-both, page is limited to 5 (enforced by backend, not schema)."
     },
     "mode": {
       "type": "string",
@@ -38,11 +38,6 @@
       "enum": ["relevance", "date"],
       "default": "relevance",
       "description": "Sort order."
-    },
-    "language": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "@deprecated Since v2. Use lang instead. Ignored by backend in v2; will be removed in Phase 2."
     }
   },
   "additionalProperties": false
