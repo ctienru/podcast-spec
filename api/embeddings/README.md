@@ -1,6 +1,6 @@
 # Embeddings API
 
-OpenAI-compatible embedding endpoint for converting text to dense vectors.
+OpenAI-style embedding endpoint for converting text to dense vectors.
 
 Both the Python `podcast-search` service (local dev / eval) and external providers
 (SiliconFlow, HuggingFace) implement this contract. Java `podcast-backend` calls
@@ -138,5 +138,6 @@ The Java service is unaware of whether the URL points to a local Python server o
   Callers should not assume unit vectors.
 - Batch input order: always sort the response `data` array by `index` before use.
 - Dimensions differ by language (768 vs 384). Java DTOs use `List<Double>` to handle both.
-- This endpoint intentionally mirrors the OpenAI `/v1/embeddings` schema to allow
-  drop-in provider switching without client code changes.
+- This endpoint keeps request and success data shape close to OpenAI `/v1/embeddings`
+  for easier provider switching, but it is not a 100% schema match
+  (for example, error format and optional fields may differ).
