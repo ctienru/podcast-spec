@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EmbeddingRequest",
+  "type": "object",
+  "required": ["model", "input"],
+  "additionalProperties": false,
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "Model identifier. Must be a supported model. Unsupported values return HTTP 422.",
+      "examples": [
+        "BAAI/bge-base-zh-v1.5",
+        "paraphrase-multilingual-MiniLM-L12-v2"
+      ]
+    },
+    "input": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Single text to embed."
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "description": "Batch of texts to embed. All texts must belong to the same language (model)."
+        }
+      ],
+      "description": "Text or texts to embed. Single string or array of strings."
+    }
+  }
+}

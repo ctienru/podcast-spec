@@ -1,0 +1,36 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "object": "embedding",
+      "index": 0,
+      "embedding": [
+        0.0234,
+        -0.0567,
+        0.0891,
+        0.1023
+      ]
+    },
+    {
+      "object": "embedding",
+      "index": 1,
+      "embedding": [
+        -0.0112,
+        0.0345,
+        -0.0678,
+        0.0912
+      ]
+    },
+    {
+      "object": "embedding",
+      "index": 2,
+      "embedding": [
+        0.0456,
+        0.0123,
+        -0.0234,
+        -0.0789
+      ]
+    }
+  ],
+  "model": "paraphrase-multilingual-MiniLM-L12-v2"
+}

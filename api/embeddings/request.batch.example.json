@@ -1,0 +1,8 @@
+{
+  "model": "paraphrase-multilingual-MiniLM-L12-v2",
+  "input": [
+    "The future of artificial intelligence",
+    "Machine learning in healthcare",
+    "Deep learning for natural language processing"
+  ]
+}

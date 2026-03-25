@@ -26,6 +26,14 @@ API contract specifications for the podcast search platform. This repository def
 ```
 podcast-spec/
 ├── api/                          # API Contracts
+│   ├── embeddings/
+│   │   ├── README.md            # Embedding endpoint contract
+│   │   ├── request.*.example.json
+│   │   └── response.*.example.json
+│   ├── log_click/
+│   │   ├── README.md            # Click log contract
+│   │   ├── request.example.json
+│   │   └── response.*.example.json
 │   ├── search_episodes/
 │   │   ├── README.md            # Endpoint documentation
 │   │   ├── request.example.json
@@ -38,29 +46,30 @@ podcast-spec/
 │       └── response.*.json
 │
 └── es/                           # Elasticsearch Query Specs
-    ├── search_episodes/
-    │   ├── README.md            # Query design rationale
-    │   ├── bm25.query.template.mustache    # Text search with time decay
-    │   ├── knn.query.template.mustache     # Semantic search
-    │   ├── exact.query.template.mustache   # Exact phrase match
-    │   └── query.template.mustache         # Legacy (alias to bm25)
+  ├── search_episodes_en/
+  │   ├── README.md            # English episode query
+  │   └── query.template.mustache
+  ├── search_episodes_zh_cn/
+  │   ├── README.md            # Simplified Chinese episode query
+  │   └── query.template.mustache
+  ├── search_episodes_zh_tw/
+  │   ├── README.md            # Traditional Chinese episode query
+  │   └── query.template.mustache
     ├── search_shows/
     │   ├── README.md
     │   ├── bm25.query.template.mustache
     │   ├── knn.query.template.mustache
     │   └── query.template.mustache
-    └── suggest/
-        ├── shows.query.template.mustache   # Show autocomplete
-        └── episodes.query.template.mustache # Episode autocomplete
 ```
 
 ## API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/search/episodes` | GET | Search episodes (supports bm25/knn/hybrid/exact modes) |
-| `/api/search/shows` | GET | Search podcasts (supports bm25/knn/hybrid modes) |
-| `/api/search/suggest` | GET | Autocomplete suggestions for shows and episodes |
+| `/api/search/episodes` | POST | Search episodes (supports bm25/knn/hybrid/exact modes) |
+| `/api/search/shows` | POST | Search podcasts (supports bm25/knn/hybrid modes) |
+| `/api/log/click` | POST | Log search result click interactions |
+| `/v1/embeddings` | POST | Generate embeddings for text content |
 
 ### Search Episodes
 
@@ -185,13 +194,11 @@ The `es/` directory contains query specifications with design rationale:
 
 | Query | Purpose | Features |
 |-------|---------|----------|
-| `search_episodes/bm25` | Keyword search | Time decay, IK analyzer for Chinese |
-| `search_episodes/knn` | Concept search | 384-dim embedding, cosine similarity |
-| `search_episodes/exact` | Precise search | match_phrase query |
+| `search_episodes_en/query.template.mustache` | English episode search | BM25 + semantic clauses in one template |
+| `search_episodes_zh_cn/query.template.mustache` | Simplified Chinese episode search | Chinese analyzer + semantic clauses |
+| `search_episodes_zh_tw/query.template.mustache` | Traditional Chinese episode search | Chinese analyzer + semantic clauses |
 | `search_shows/bm25` | Show keyword search | Title^5, description^2 boosting |
 | `search_shows/knn` | Show semantic search | Embedding-based |
-| `suggest/shows` | Show autocomplete | Edge n-gram on title |
-| `suggest/episodes` | Episode autocomplete | Edge n-gram on title |
 
 ## Related Projects
 
