@@ -1,0 +1,21 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "object": "embedding",
+      "index": 0,
+      "embedding": [0.0234, -0.0567, 0.0891, "...384 floats total for paraphrase-multilingual-MiniLM-L12-v2..."]
+    },
+    {
+      "object": "embedding",
+      "index": 1,
+      "embedding": [-0.0112, 0.0345, -0.0678, "...384 floats total..."]
+    },
+    {
+      "object": "embedding",
+      "index": 2,
+      "embedding": [0.0456, 0.0123, -0.0234, "...384 floats total..."]
+    }
+  ],
+  "model": "paraphrase-multilingual-MiniLM-L12-v2"
+}
