@@ -49,9 +49,6 @@ podcast-spec/
     │   ├── bm25.query.template.mustache
     │   ├── knn.query.template.mustache
     │   └── query.template.mustache
-    └── suggest/
-        ├── shows.query.template.mustache   # Show autocomplete
-        └── episodes.query.template.mustache # Episode autocomplete
 ```
 
 ## API Endpoints
@@ -60,7 +57,6 @@ podcast-spec/
 |----------|--------|-------------|
 | `/api/search/episodes` | GET | Search episodes (supports bm25/knn/hybrid/exact modes) |
 | `/api/search/shows` | GET | Search podcasts (supports bm25/knn/hybrid modes) |
-| `/api/search/suggest` | GET | Autocomplete suggestions for shows and episodes |
 
 ### Search Episodes
 
@@ -190,8 +186,6 @@ The `es/` directory contains query specifications with design rationale:
 | `search_episodes/exact` | Precise search | match_phrase query |
 | `search_shows/bm25` | Show keyword search | Title^5, description^2 boosting |
 | `search_shows/knn` | Show semantic search | Embedding-based |
-| `suggest/shows` | Show autocomplete | Edge n-gram on title |
-| `suggest/episodes` | Episode autocomplete | Edge n-gram on title |
 
 ## Related Projects
 
