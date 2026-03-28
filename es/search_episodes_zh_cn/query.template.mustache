@@ -18,7 +18,7 @@
   {{#mode_hybrid}}
   "knn": {
     "field": "title_vector",
-    "query_vector": {{#toJson}}queryVector{{/toJson}},
+    "query_vector": {{{queryVector}}},
     "k": {{size}},
     "num_candidates": 100
   },
