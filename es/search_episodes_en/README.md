@@ -26,7 +26,7 @@
 | Mode | Behavior |
 |------|----------|
 | `bm25` | `multi_match` on `title`, `description`, `show.title`, `show.publisher` |
-| `hybrid` | BM25 + kNN (`title_vector`) combined via RRF |
+| `hybrid` | BM25 + kNN (`embedding`) combined via RRF |
 | `exact` | `match_phrase` on `title` |
 
 ---

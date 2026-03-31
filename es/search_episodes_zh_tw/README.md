@@ -26,7 +26,7 @@
 | Mode | Behavior |
 |------|----------|
 | `bm25` | `multi_match` on `title.chinese`, `description.chinese`, `show.title.chinese`, `show.publisher` |
-| `hybrid` | BM25 + kNN (`title_vector`) combined via RRF |
+| `hybrid` | BM25 + kNN (`embedding`) combined via RRF |
 | `exact` | `match_phrase` on `title.chinese` |
 | `knn` | Not directly in template; handled at the routing layer |
 
