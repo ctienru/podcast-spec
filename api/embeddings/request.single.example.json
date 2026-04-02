@@ -1,4 +1,4 @@
 {
-  "model": "BAAI/bge-base-zh-v1.5",
+  "model": "paraphrase-multilingual-MiniLM-L12-v2",
   "input": "人工智慧在醫療領域的應用"
 }

@@ -32,7 +32,7 @@ POST /v1/embeddings
 
 | Model | Language | Dimensions | Notes |
 |-------|----------|-----------|-------|
-| `BAAI/bge-base-zh-v1.5` | zh-tw, zh-cn | 768 | Default Chinese model |
+| `paraphrase-multilingual-MiniLM-L12-v2` | zh-tw, zh-cn | 384 | Default Chinese model |
 | `paraphrase-multilingual-MiniLM-L12-v2` | en | 384 | Default English model |
 
 **Important:** The model name controls which vector space the output belongs to.
@@ -62,7 +62,7 @@ See `request.single.example.json` and `request.batch.example.json`.
 |-------|------|-------------|
 | object | string | Always `"embedding"` |
 | index | integer | 0-based position corresponding to the input array |
-| embedding | number[] | Dense float vector. Length matches model dimensions (768 or 384). |
+| embedding | number[] | Dense float vector. Length is always 384. |
 
 **Note:** `index` is guaranteed to be present and must be used to re-order results
 when processing batch responses. Do not assume the response array is in input order.
@@ -107,7 +107,7 @@ These variables are read by both the Java backend and the Python service (when r
 |----------|----------|---------|-------------|
 | `EMBEDDING_API_URL` | ✅ | — | Full URL of the `/v1/embeddings` endpoint (e.g. `https://api.siliconflow.cn/v1/embeddings`) |
 | `EMBEDDING_API_KEY` | ✅ | — | Bearer token for `Authorization` header |
-| `EMBEDDING_MODEL_ZH` | ❌ | `BAAI/bge-base-zh-v1.5` | Model name for Chinese (zh-tw / zh-cn) text |
+| `EMBEDDING_MODEL_ZH` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for Chinese (zh-tw / zh-cn) text |
 | `EMBEDDING_MODEL_EN` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for English text |
 | `EMBEDDING_TIMEOUT_MS` | ❌ | `2000` | Per-request timeout in milliseconds |
 
@@ -137,7 +137,7 @@ The Java service is unaware of whether the URL points to a local Python server o
 - Embeddings are **not normalized** by default unless the upstream model does so internally.
   Callers should not assume unit vectors.
 - Batch input order: always sort the response `data` array by `index` before use.
-- Dimensions differ by language (768 vs 384). Java DTOs use `List<Double>` to handle both.
+- All embeddings are 384 dimensions regardless of language.
 - This endpoint keeps request and success data shape close to OpenAI `/v1/embeddings`
   for easier provider switching, but it is not a 100% schema match
   (for example, error format and optional fields may differ).

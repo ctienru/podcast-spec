@@ -5,18 +5,26 @@
     {
       "title": "EmbeddingSuccessResponse",
       "type": "object",
-      "required": ["object", "data", "model"],
+      "required": [
+        "object",
+        "data",
+        "model"
+      ],
       "additionalProperties": false,
       "properties": {
         "object": {
           "type": "string",
-          "enum": ["list"],
+          "enum": [
+            "list"
+          ],
           "description": "Always 'list'."
         },
         "data": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/definitions/EmbeddingObject" },
+          "items": {
+            "$ref": "#/definitions/EmbeddingObject"
+          },
           "description": "One embedding object per input text. Sort by 'index' before use."
         },
         "model": {
@@ -28,7 +36,9 @@
     {
       "title": "EmbeddingErrorResponse",
       "type": "object",
-      "required": ["detail"],
+      "required": [
+        "detail"
+      ],
       "additionalProperties": false,
       "properties": {
         "detail": {
@@ -41,12 +51,18 @@
   "definitions": {
     "EmbeddingObject": {
       "type": "object",
-      "required": ["object", "index", "embedding"],
+      "required": [
+        "object",
+        "index",
+        "embedding"
+      ],
       "additionalProperties": false,
       "properties": {
         "object": {
           "type": "string",
-          "enum": ["embedding"],
+          "enum": [
+            "embedding"
+          ],
           "description": "Always 'embedding'."
         },
         "index": {
@@ -56,9 +72,11 @@
         },
         "embedding": {
           "type": "array",
-          "items": { "type": "number" },
+          "items": {
+            "type": "number"
+          },
           "minItems": 1,
-          "description": "Dense float vector. Length is 768 for BAAI/bge-base-zh-v1.5, 384 for paraphrase-multilingual-MiniLM-L12-v2."
+          "description": "Dense float vector. Length is 384 for paraphrase-multilingual-MiniLM-L12-v2."
         }
       }
     }
