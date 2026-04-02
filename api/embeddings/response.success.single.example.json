@@ -12,5 +12,5 @@
       ]
     }
   ],
-  "model": "BAAI/bge-base-zh-v1.5"
+  "model": "paraphrase-multilingual-MiniLM-L12-v2"
 }

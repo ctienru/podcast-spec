@@ -32,7 +32,7 @@ POST /v1/embeddings
 
 | Model | Language | Dimensions | Notes |
 |-------|----------|-----------|-------|
-| `BAAI/bge-base-zh-v1.5` | zh-tw, zh-cn | 768 | Default Chinese model |
+| `paraphrase-multilingual-MiniLM-L12-v2` | zh-tw, zh-cn | 384 | Default Chinese model |
 | `paraphrase-multilingual-MiniLM-L12-v2` | en | 384 | Default English model |
 
 **Important:** The model name controls which vector space the output belongs to.
@@ -107,7 +107,7 @@ These variables are read by both the Java backend and the Python service (when r
 |----------|----------|---------|-------------|
 | `EMBEDDING_API_URL` | ✅ | — | Full URL of the `/v1/embeddings` endpoint (e.g. `https://api.siliconflow.cn/v1/embeddings`) |
 | `EMBEDDING_API_KEY` | ✅ | — | Bearer token for `Authorization` header |
-| `EMBEDDING_MODEL_ZH` | ❌ | `BAAI/bge-base-zh-v1.5` | Model name for Chinese (zh-tw / zh-cn) text |
+| `EMBEDDING_MODEL_ZH` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for Chinese (zh-tw / zh-cn) text |
 | `EMBEDDING_MODEL_EN` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for English text |
 | `EMBEDDING_TIMEOUT_MS` | ❌ | `2000` | Per-request timeout in milliseconds |
 
