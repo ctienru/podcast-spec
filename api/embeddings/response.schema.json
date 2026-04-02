@@ -76,7 +76,7 @@
             "type": "number"
           },
           "minItems": 1,
-          "description": "Dense float vector. Length is 384 for paraphrase-multilingual-MiniLM-L12-v2, 384 for paraphrase-multilingual-MiniLM-L12-v2."
+          "description": "Dense float vector. Length is 384 for paraphrase-multilingual-MiniLM-L12-v2."
         }
       }
     }
