@@ -62,7 +62,7 @@ See `request.single.example.json` and `request.batch.example.json`.
 |-------|------|-------------|
 | object | string | Always `"embedding"` |
 | index | integer | 0-based position corresponding to the input array |
-| embedding | number[] | Dense float vector. Length matches model dimensions (768 or 384). |
+| embedding | number[] | Dense float vector. Length is always 384. |
 
 **Note:** `index` is guaranteed to be present and must be used to re-order results
 when processing batch responses. Do not assume the response array is in input order.
@@ -137,7 +137,7 @@ The Java service is unaware of whether the URL points to a local Python server o
 - Embeddings are **not normalized** by default unless the upstream model does so internally.
   Callers should not assume unit vectors.
 - Batch input order: always sort the response `data` array by `index` before use.
-- Dimensions differ by language (768 vs 384). Java DTOs use `List<Double>` to handle both.
+- All embeddings are 384 dimensions regardless of language.
 - This endpoint keeps request and success data shape close to OpenAI `/v1/embeddings`
   for easier provider switching, but it is not a 100% schema match
   (for example, error format and optional fields may differ).
