@@ -2,11 +2,18 @@
 
 OpenAI-style embedding endpoint for converting text to dense vectors.
 
-Both the Python `podcast-search` service (local dev / eval) and external providers
-(SiliconFlow, HuggingFace) implement this contract. Java `podcast-backend` calls
-whichever URL is configured via `EMBEDDING_API_URL` — no code change needed to switch providers.
+This document defines the **OpenAI-compatible API contract** exposed at the HTTP boundary by the
+Python `podcast-search` service (local dev / eval).
 
-This document defines the **API contract** only.
+In production, Java `podcast-backend` uses a RunPod serverless backend instead. That backend does
+**not** expose this OpenAI-style request/response shape directly; the Java `runpod` provider
+translates between this contract and the RunPod-specific serverless envelope internally. Switching
+environments is still a configuration-only change via `EMBEDDING_API_URL` and `EMBEDDING_PROVIDER_TYPE`.
+
+The Java backend supports two HTTP client implementations selected by `EMBEDDING_PROVIDER_TYPE`:
+- `openai` (default): standard OpenAI-compatible `/v1/embeddings` — used for local dev (`podcast-search`)
+- `runpod`: adapter for the RunPod serverless format (different request/response envelope) — used in production
+
 Internal model weights and inference infrastructure are not exposed.
 
 ---
@@ -89,7 +96,7 @@ See `response.success.single.example.json` and `response.success.batch.example.j
 | 503 | Upstream model server unavailable | Retry with exponential backoff |
 | 500 | Unexpected server error | Log and surface as `EmbeddingUnavailableException` |
 
-**Retry strategy (Java `ExternalEmbeddingProvider`):**
+**Retry strategy (Java `ExternalEmbeddingProvider` / `RunPodEmbeddingProvider`):**
 - Single-text (`embed()`): up to 3 attempts, exponential backoff (500 ms base)
 - Batch (`embed_batch()`): fail-fast, no retry (retrying large batches is too expensive)
 - 401 / 403 / 422: never retry regardless of method
@@ -105,8 +112,9 @@ These variables are read by both the Java backend and the Python service (when r
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `EMBEDDING_API_URL` | ✅ | — | Full URL of the `/v1/embeddings` endpoint (e.g. `https://api.siliconflow.cn/v1/embeddings`) |
-| `EMBEDDING_API_KEY` | ✅ | — | Bearer token for `Authorization` header |
+| `EMBEDDING_API_URL` | ✅ | — | Full URL of the embedding endpoint (e.g. `https://api.siliconflow.cn/v1/embeddings`) |
+| `EMBEDDING_API_KEY` | ✅ (external) | — | Bearer token for `Authorization` header. Not required when using local `podcast-search` dev server. |
+| `EMBEDDING_PROVIDER_TYPE` | ❌ | `openai` | HTTP client implementation: `openai` (local dev, OpenAI-compatible) or `runpod` (production, RunPod serverless) |
 | `EMBEDDING_MODEL_ZH` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for Chinese (zh-tw / zh-cn) text |
 | `EMBEDDING_MODEL_EN` | ❌ | `paraphrase-multilingual-MiniLM-L12-v2` | Model name for English text |
 | `EMBEDDING_TIMEOUT_MS` | ❌ | `2000` | Per-request timeout in milliseconds |

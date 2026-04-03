@@ -50,7 +50,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["episodeId", "title", "description", "highlights", "publishedAt", "durationSec", "imageUrl", "language", "podcast"],
+            "required": ["episodeId", "title", "description", "highlights", "publishedAt", "durationSec", "language", "podcast"],
             "additionalProperties": false,
             "properties": {
               "episodeId": {
@@ -73,7 +73,6 @@
                 "description": "ISO 8601 UTC timestamp."
               },
               "durationSec": { "type": "integer", "minimum": 0 },
-              "imageUrl": { "type": "string" },
               "language": {
                 "type": "string",
                 "description": "Language index this episode belongs to (zh-tw / zh-cn / en)."

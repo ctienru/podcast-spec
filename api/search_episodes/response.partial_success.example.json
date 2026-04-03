@@ -17,7 +17,6 @@
         },
         "publishedAt": "2024-11-02T00:00:00Z",
         "durationSec": 3600,
-        "imageUrl": "https://cdn.example.com/episodes/episode_987.jpg",
         "language": "en",
         "podcast": {
           "podcastId": "show:apple:123",
