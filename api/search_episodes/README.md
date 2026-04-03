@@ -23,17 +23,19 @@ to support complex query parameters in the request body.
 |------|------|----------|-------------|
 | q | string | ✅ | Search keyword (cannot be empty) |
 | page | number | ❌ | Page number (min: 1, default: 1) |
-| size | number | ❌ | Page size (min: 1, max: 100, default: 20) |
+| size | number | ❌ | Page size (min: 1, max: 50, default: 20) |
 | sort | string | ❌ | Sort order: `relevance` or `date` |
-| language | string[] | ❌ | Language filter |
+| lang | string | ❌ | Language filter (see values below) |
+| mode | string | ❌ | Search mode: `bm25` (default), `knn`, `hybrid`, `exact` |
 
 ### Language Values
 
 | Value | Description |
 |-------|-------------|
 | `en` | English |
-| `zh-hant` | Traditional Chinese (繁體中文) |
-| `zh-hans` | Simplified Chinese (简体中文) |
+| `zh-tw` | Traditional Chinese (繁體中文) |
+| `zh-cn` | Simplified Chinese (简体中文) |
+| `zh-both` | Both Traditional and Simplified Chinese (cross-index RRF) |
 
 ### Example
 
@@ -74,6 +76,7 @@ All responses return a JSON object with a top-level `status` field.
 | status | string | Response status |
 | data | object | Response data (present when status is `ok` or `partial_success`) |
 | warning | string | Warning message (only for `partial_success`) |
+| searchRequestId | string (UUID v4) | Unique request ID — pass to `POST /api/log/click` as `requestId` |
 
 ---
 
@@ -100,8 +103,7 @@ All responses return a JSON object with a top-level `status` field.
 | highlights | object | Highlighted text snippets |
 | publishedAt | string | ISO 8601 datetime |
 | durationSec | number | Episode duration (seconds) |
-| imageUrl | string | Episode image |
-| podcast | object | Podcast information |
+| podcast | object | Podcast information (contains `imageUrl`) |
 
 ---
 
@@ -167,7 +169,7 @@ the API may still return search results with a warning.
 
 | Code | HTTP Status | Description |
 |------|-------------|-------------|
-| INVALID_PARAMETER | 400 | Invalid request parameters (e.g., size > 100, empty query) |
+| INVALID_PARAMETER | 400 | Invalid request parameters (e.g., size > 50, empty query, invalid lang) |
 | ES_PARSE_ERROR | 500 | Failed to parse search service response |
 | ES_MISSING_FIELD | 500 | Required field missing in search response |
 | SEARCH_SERVICE_ERROR | 503 | Search service temporarily unavailable |
@@ -207,6 +209,6 @@ Rate limit exceeded.
 
 ## Notes
 
-- Maximum `size` is 100
+- Maximum `size` is 50
 - `page * size` must not exceed system limits
 - Highlight tags use `<em>` by default
