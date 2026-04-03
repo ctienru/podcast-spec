@@ -22,11 +22,11 @@ to support complex query parameters in the request body.
 | Field | Type | Required | Description |
 |------|------|----------|-------------|
 | q | string | ✅ | Search keyword (cannot be empty) |
-| page | number | ❌ | Page number (min: 1, default: 1) |
-| size | number | ❌ | Page size (min: 1, max: 50, default: 20) |
+| page | integer | ❌ | Page number (min: 1, default: 1) |
+| size | integer | ❌ | Page size (min: 1, max: 50, default: 20) |
 | sort | string | ❌ | Sort order: `relevance` or `date` |
 | lang | string | ❌ | Language filter (see values below) |
-| mode | string | ❌ | Search mode: `bm25` (default), `knn`, `hybrid`, `exact` |
+| mode | string | ❌ | Search mode: `bm25`, `knn`, `hybrid` (default), `exact` |
 
 ### Language Values
 
@@ -35,7 +35,7 @@ to support complex query parameters in the request body.
 | `en` | English |
 | `zh-tw` | Traditional Chinese (繁體中文) |
 | `zh-cn` | Simplified Chinese (简体中文) |
-| `zh-both` | Both Traditional and Simplified Chinese (cross-index RRF) |
+| `zh-both` | Both Traditional and Simplified Chinese (cross-index RRF); `page` must be ≤ 5 — exceeding returns `400 CROSS_INDEX_PAGE_LIMIT` |
 
 ### Example
 
@@ -102,7 +102,8 @@ All responses return a JSON object with a top-level `status` field.
 | description | string | Episode description |
 | highlights | object | Highlighted text snippets |
 | publishedAt | string | ISO 8601 datetime |
-| durationSec | number | Episode duration (seconds) |
+| durationSec | integer | Episode duration (seconds) |
+| language | string | Language index this episode belongs to (`zh-tw`, `zh-cn`, `en`) |
 | podcast | object | Podcast information (contains `imageUrl`) |
 
 ---

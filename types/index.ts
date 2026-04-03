@@ -115,7 +115,6 @@ export interface EpisodeDto {
   /** ISO 8601 UTC timestamp. */
   publishedAt: string;
   durationSec: number;
-  imageUrl: string;
 
   /** Language index this episode belongs to (zh-tw / zh-cn / en). */
   language: string;
